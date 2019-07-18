@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Planes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Plane>
+		<Model>A</Model>
+		<Origin>Origin222</Origin>
+		<Chars type="Char2">
+			<Type>разведчик</Type>
+			<count>2</count>
+			<radar>true</radar>
+		</Chars>
+		<Parameters>
+			<long>40</long>
+			<width>50</width>
+			<height>60</height>
+		</Parameters>
+		<Price>3330</Price>
+	</Plane>
+	<Plane>
+		<Model>B</Model>
+		<Origin>Origin</Origin>
+		<Chars type="Char1">
+			<Type>сопровождения</Type>
+			<count>1</count>
+			<rockets>5</rockets>
+			<radar>true</radar>
+		</Chars>
+		<Parameters>
+			<long>10</long>
+			<width>20</width>
+			<height>30</height>
+		</Parameters>
+		<Price>300</Price>
+	</Plane>
+</Planes>

@@ -1,0 +1,178 @@
+package ua.nure.gunko.practice7.controllers;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+
+import ua.nure.gunko.practice7.entity.Base;
+import ua.nure.gunko.practice7.entity.Plane;
+import ua.nure.gunko.practice7.entity.Planes;
+
+public class ParsSAX {
+	public Planes planes;
+
+	public ParsSAX() throws SAXException, ParserConfigurationException, IOException {
+		create();
+	}
+
+	public void create() throws SAXException, ParserConfigurationException, IOException {
+		SAXParserFactory spf = SAXParserFactory.newInstance();
+		SAXParser saxParser = spf.newSAXParser();
+		XMLReader xreader = saxParser.getXMLReader();
+		MyHandler handler = new MyHandler();
+		xreader.setContentHandler(handler);
+		xreader.parse("input.xml");
+		planes = handler.getPlanes();
+	}
+
+	private static class MyHandler extends DefaultHandler {
+		static final String PLANES_TAG = "tns:Planes";
+		static final String PLANE_TAG = "Plane";
+		static final String MODEL_TAG = "Model";
+		static final String ORIGIN_TAG = "Origin";
+		static final String CHARS_TAG = "Chars";
+		static final String TYPE_TAG = "Type";
+		static final String COUNT_TAG = "count";
+		static final String ROCKETS_TAG = "rockets";
+		static final String RADAR_TAG = "radar";
+		static final String PARAMETRS_TAG = "Parameters";
+		static final String LONG_TAG = "long";
+		static final String WIDTH_TAG = "width";
+		static final String HEIGHT_TAG = "height";
+		static final String PRICE_TAG = "Price";
+
+		private Planes planes;
+		private Plane plane;
+		private Plane.Parameters parameters;
+		private Base chars;
+		private String currentElement;
+
+		@Override
+		public void startDocument() throws SAXException {
+		}
+
+		@Override
+		public void endDocument() throws SAXException {
+		}
+
+		@Override
+		public void startElement(String uri, String localName, String qName, Attributes attributes)
+				throws SAXException {
+			currentElement = qName;
+			switch (currentElement) {
+			case PLANES_TAG: {
+				planes = new Planes();
+				getPlanes().plane = new ArrayList<>();
+			}
+				break;
+			case PLANE_TAG: {
+				plane = new Plane();
+			}
+				break;
+			case CHARS_TAG: {
+				chars = new Base();
+			}
+				break;
+			case PARAMETRS_TAG: {
+				parameters = new Plane.Parameters();
+			}
+				break;
+			default: {
+				// nothing
+			}
+			}
+		}
+
+		@Override
+		public void endElement(String uri, String localName, String qName) throws SAXException {
+			switch (qName) {
+			case PLANE_TAG: {
+				getPlanes().plane.add(plane);
+			}
+				break;
+			case CHARS_TAG: {
+				plane.chars = chars;
+			}
+				break;
+			case PARAMETRS_TAG: {
+				plane.parameters = parameters;
+			}
+				break;
+
+			default: {
+
+			}
+			}
+		}
+
+		@Override
+		public void characters(char[] ch, int start, int length) throws SAXException {
+			String text = new String(ch, start, length);
+			if (text.contains("<") || currentElement == null) {
+				return;
+			}
+
+			if (!text.trim().equals("")) {
+				switch (currentElement) {
+				case MODEL_TAG: {
+					plane.model = text;
+				}
+					break;
+				case ORIGIN_TAG: {
+					plane.origin = text;
+				}
+					break;
+				case PRICE_TAG: {
+					plane.price = Integer.parseInt(text.trim());
+				}
+					break;
+				case TYPE_TAG: {
+					chars.type = text;
+				}
+					break;
+				case COUNT_TAG: {
+					chars.count = Integer.parseInt(text.trim());
+				}
+					break;
+
+				case ROCKETS_TAG: {
+					chars.rockets = Integer.parseInt(text.trim());
+				}
+					break;
+				case RADAR_TAG: {
+					chars.radar = Boolean.parseBoolean(text.trim());
+				}
+					break;
+				case LONG_TAG: {
+					parameters._long = Integer.parseInt(text.trim());
+				}
+					break;
+				case WIDTH_TAG: {
+					parameters.width = Integer.parseInt(text.trim());
+				}
+					break;
+				case HEIGHT_TAG: {
+					parameters.height = Integer.parseInt(text.trim());
+				}
+					break;
+				default: {
+
+				}
+				}
+			}
+		}
+
+		public Planes getPlanes() {
+			return planes;
+		}
+
+	}
+}

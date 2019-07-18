@@ -1,0 +1,13 @@
+
+package ua.nure.gunko.practice6.part1;
+
+import java.util.Scanner;
+
+import ua.nure.gunko.practice6.part1.WordContainer;
+
+public class Part1 {
+	
+	public static void main(String[] args) {
+		WordContainer.main(args);
+	}
+}

@@ -1,0 +1,74 @@
+package ua.nure.gunko.rent.web.command.client;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import ua.nure.gunko.rent.db.CarClassDao;
+import ua.nure.gunko.rent.db.CarDao;
+import ua.nure.gunko.rent.db.entity.Car;
+import ua.nure.gunko.rent.db.entity.CarClass;
+import ua.nure.gunko.rent.db.entity.Role;
+import ua.nure.gunko.rent.db.entity.User;
+import ua.nure.gunko.rent.web.ActionType;
+import ua.nure.gunko.rent.web.Path;
+import ua.nure.gunko.rent.web.command.Command;
+
+public class CarListCommand  extends Command{
+
+	/**
+	 * Show all free cars for client.
+	 * @author maxforce01
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType type)
+			throws IOException, ServletException {
+		String forward = null;
+		if (type == ActionType.GET) {
+			forward = doGet(request, response);
+		} else {
+			String error = "error.invalid.request";
+			request.setAttribute("errorMessage", error);
+			forward = Path.PAGE__ERROR_PAGE;
+		}
+		return forward;
+	}
+
+	@Override
+	protected String doPost(HttpServletRequest request, HttpServletResponse response) {
+		String errorMessage = "error.invalid.request";
+		return Path.COMMAND__ERROR_PAGE + errorMessage;
+	}
+
+	@Override
+	protected String doGet(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		Role role = (Role) session.getAttribute("userRole");
+		if(user == null || role == null) {
+			return Path.LOGIN__PAGE;
+		}
+		
+		if(role != Role.CLIENT) {
+			String errorMessage = "error.invalid.permission";
+			request.setAttribute("errorMessage", errorMessage);
+			return Path.PAGE__ERROR_PAGE;
+		}
+		
+		List<Car> list = new CarDao().findAllFreeCars();;
+		List<CarClass> classes = new CarClassDao().findAllClasses();
+		request.setAttribute("classes", classes);
+		request.setAttribute("cars", list);
+		request.setAttribute("title", "Список машин");
+		return Path.COMMAND__LIST_CARS;
+	}
+
+	
+
+}

@@ -1,0 +1,29 @@
+
+package ua.nure.gunko.practice6;
+
+import java.util.Scanner;
+
+public class Part1 {
+	private WordContainer word = new WordContainer();
+	public static final String[] read() {
+		StringBuilder sb = new StringBuilder();
+		Scanner sc = new Scanner(System.in);
+		while (sc.hasNextLine()) {
+			sb.append(sc.nextLine());
+			break;
+		}
+		sc.close();
+		return sb.toString().split(" ");
+	}
+	public static void main(String[] args) {
+		Part1 p = new Part1();
+			String[] words = read();
+			for(String line:words) {
+				if(line.equals("stop")) {
+					break;
+				}
+				p.word.add(line);
+			}
+		System.out.println(p.word);
+	}
+}

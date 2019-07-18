@@ -1,0 +1,160 @@
+package ua.nure.gunko.practice6.part5;
+
+public class Tree<E extends Comparable<E>> {
+	private Node<E> root;
+
+	private Node<E> parent;
+
+	private Node<E> current;
+
+	public E get() {
+		return root.element;
+	}
+
+	public void setParent(Node<E> parent) {
+		this.parent = parent;
+	}
+
+	public void setCurrent(Node<E> current) {
+		this.current = current;
+	}
+
+	public Node<E> getParent() {
+		return parent;
+	}
+
+	public Node<E> getCurrent() {
+		return current;
+	}
+
+	public boolean remove(E element) {
+		final String lNode = "lNode";
+		final String rNode = "rNode";
+		Node<E> parent = null;
+		Node<E> current = root;
+		int previous;
+		String lastNode = null;
+
+		while (current != null && (previous = current.element.compareTo(element)) != 0) {
+			parent = current;
+			if (previous > 0) {
+				current = current.left;
+				lastNode = lNode;
+			} else {
+				current = current.right;
+				lastNode = rNode;
+			}
+		}
+		if (current == null) {
+			return false;
+		}
+
+		if (current.right == null) {
+			if (lastNode.equals(rNode)) {
+				parent.right = current.left;
+			} else if (lastNode.equals(lNode)) {
+				parent.left = current.left;
+			} else {
+				root = current.left;
+			}
+		}
+
+		if (current.left == null) {
+			if (lastNode.equals(rNode)) {
+				parent.right = current.right;
+			} else if (lastNode.equals(lNode)) {
+				parent.left = current.right;
+			} else {
+				root = current.right;
+			}
+		}
+
+		Node<E> replacement = current.right;
+		parent = current;
+		while (replacement.left != null) {
+			parent = replacement;
+			replacement = replacement.left;
+		}
+		current.element = replacement.element;
+		if (parent.equals(current)) {
+			parent.right = replacement.right;
+		} else {
+			parent.left = replacement.right;
+		}
+		return true;
+	}
+
+	public void add(E[] elements) {
+		for (int i = 0; i < elements.length; i++) {
+			add(elements[i]);
+		}
+	}
+
+	public boolean add(E e) {
+		if (root == null) {
+			root = new Node<>(e, null, null);
+			return true;
+		}
+		return add(root, e);
+	}
+
+	public boolean add(Node<E> node, E e) {
+		if (e.compareTo(node.element) < 0) {
+			if (node.left == null) {
+				node.left = new Node<>(e, null, null);
+				return true;
+			}
+			return add(node.left, e);
+		}
+		if (e.compareTo(node.element) > 0) {
+			if (node.right == null) {
+				node.right = new Node<>(e, null, null);
+				return true;
+			}
+			return add(node.right, e);
+		}
+		return false;
+	}
+
+	public void print() {
+		print(root, 0);
+	}
+
+	private void print(Node<E> root, int space) {
+		// Base case
+		if (root == null) {
+			return;
+		}
+		// Increase distance between levels
+		space += 2;
+
+		// Process left child
+		print(root.left, space);
+
+		// Print current node after space
+		// count
+		// System.out.print(System.lineSeparator());
+		for (int i = 2; i < space; i++) {
+			System.out.print(" ");
+		}
+		System.out.print(root.element + System.lineSeparator());
+		// Process right child first
+		print(root.right, space);
+	}
+
+	public static class Node<E> {
+
+		private E element;
+		private Node<E> left;
+		private Node<E> right;
+
+		Node(E element, Node<E> left, Node<E> right) {
+			this.element = element;
+			this.left = left;
+			this.right = right;
+
+		}
+
+	}
+
+}

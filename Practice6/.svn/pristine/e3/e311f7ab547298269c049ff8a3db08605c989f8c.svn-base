@@ -1,0 +1,47 @@
+package ua.nure.gunko.practice6;
+
+
+public class WordContainer {
+	protected Word[] words = {};
+	
+
+	public void add(String str) {
+		if (words.length == 0) {
+			first(str);
+		} else {
+			if(check(str)!=-1) {
+				words[check(str)].incFrequency();
+			}else {
+				first(str);
+			}
+		}
+	}
+
+	private void first(String str) {
+		Word[] collectionNew = new Word[words.length + 1];
+		for (int i = 0; i < words.length; i++) {
+			collectionNew[i] = words[i];
+		}
+		collectionNew[collectionNew.length - 1] = new Word(str);
+		words = collectionNew;
+	}
+
+	private int check(String str) {
+		int ind = -1;
+		for (int i = 0; i < words.length; i++) {
+			if(words[i].getContent().equals(str)) {
+				ind = i;
+			}
+		}
+		return ind;
+	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for(Word word:words) {
+			sb.append(word).append(System.lineSeparator());
+		}
+		return sb.toString();
+	}
+	
+}

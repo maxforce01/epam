@@ -1,0 +1,41 @@
+package ua.nure.gunko.practice6;
+
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
+
+public class Demo {
+	public static void main(String[] args) {
+		try {
+			System.setIn(new ByteArrayInputStream(
+					"asd asdf asd asdf asdf 43 asdsf 43 43 434".getBytes(System.getProperty("file.encoding"))));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.setIn(System.in);
+		System.out.println("~~~~~~~~~~~~Part1");
+		Part1.main(args);
+
+		System.out.println("~~~~~~~~~~~~Part2");
+		Part2.main(args);
+		System.out.println("~~~~~~~~~~~~Part3");
+		Part3.main(args);
+		System.out.println();
+
+		System.out.println("~~~~~~~~~~~~Part4");
+		Part4.main(args);
+
+		System.out.println("~~~~~~~~~~~~Part5");
+		Part5.main(args);
+
+		System.out.println("~~~~~~~~~~~~Part6");
+		System.out.println("Frequency demonstration: ");
+		Part6.main(new String[] { "-i", "input.txt", "-t", "frequency" });
+		System.out.println("Length demonstration: ");
+		Part6.main(new String[] { "-i", "input.txt", "-t", "length" });
+		System.out.println("Duplicates demonstration: ");
+		Part6.main(new String[] { "-i", "input.txt", "-t", "duplicates" });
+	}
+
+}

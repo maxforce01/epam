@@ -1,0 +1,52 @@
+package ua.nure.gunko.practice6.part3;
+
+public class Parking {
+	protected int[] parking;
+
+	public Parking(int n) {
+		parking = new int[n];
+	}
+
+	boolean arrive(int k) {
+		int i = k;
+		boolean result = false;
+		while (i != parking.length) {
+			if (parking[i] == 0) {
+				parking[i] = 1;
+				result = true;
+				break;
+			}
+			i++;
+		}
+		if (!result) {
+			i = 0;
+			while (i != parking.length) {
+				if (parking[i] == 0) {
+					parking[i] = 1;
+					result = true;
+					break;
+				}
+				i++;
+			}
+		}
+		return result;
+	}
+
+	boolean depart(int k) {
+		if (parking[k] == 1) {
+			parking[k] = 0;
+			return true;
+		}
+		return false;
+	}
+
+	void print() {
+		StringBuilder sb = new StringBuilder();
+		for (int p : parking) {
+			sb.append(p);
+		}
+		System.out.println(sb);
+	}
+
+	
+}

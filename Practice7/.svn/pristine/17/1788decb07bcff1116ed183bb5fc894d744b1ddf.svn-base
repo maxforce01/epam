@@ -1,0 +1,33 @@
+package ua.nure.gunko.practice7;
+
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.xml.sax.SAXException;
+
+import ua.nure.gunko.practice7.controllers.ParsDOM;
+import ua.nure.gunko.practice7.controllers.ParsSAX;
+import ua.nure.gunko.practice7.entity.Planes;
+import ua.nure.gunko.practice7.util.Sorter;
+
+public class Main {
+
+	public static Planes planes;
+
+	public static void main(String[] args)
+			throws SAXException, ParserConfigurationException, IOException, TransformerException {
+		ParsDOM dom = new ParsDOM();
+		dom.create();
+		planes = dom.getPlanes();
+		Sorter.sortByModel(planes);
+		ParsDOM.saveToXML(planes, "output.dom.xml");
+		ParsSAX saxController = new ParsSAX();
+		saxController.create();
+		planes = saxController.planes;
+		Sorter.sortByModel(planes);
+		ParsDOM.saveToXML(planes, "output.sax.xml");
+
+	}
+}

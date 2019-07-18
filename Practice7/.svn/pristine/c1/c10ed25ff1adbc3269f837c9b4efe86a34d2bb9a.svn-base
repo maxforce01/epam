@@ -1,0 +1,45 @@
+package ua.nure.gunko.practice7.util;
+
+import java.util.Collections;
+import java.util.Comparator;
+
+import ua.nure.gunko.practice7.entity.Plane;
+import ua.nure.gunko.practice7.entity.Planes;
+
+public class Sorter {
+		private Sorter() {
+			throw new IllegalStateException("Utility class");
+		}
+	
+	public static final Comparator<Plane> BY_MODEL = new Comparator<Plane>() {
+		@Override
+		public int compare(Plane o1, Plane o2) {
+			return o1.getModel().compareTo(o2.getModel());
+		}
+	};
+
+	public static final Comparator<Plane> BY_ORIGIN = new Comparator<Plane>() {
+		@Override
+		public int compare(Plane o1, Plane o2) {
+			return o1.getOrigin().compareTo(o2.getOrigin());
+		}
+	};
+	public static final Comparator<Plane> BY_TYPE = new Comparator<Plane>() {
+		@Override
+		public int compare(Plane o1, Plane o2) {
+			return o1.getChars().type.compareTo(o2.getChars().type);
+		}
+	};
+
+	public static final void sortByModel(Planes planes) {
+		Collections.sort(planes.plane, BY_MODEL);
+	}
+
+	public static final void sortByOrigin(Planes planes) {
+		Collections.sort(planes.plane, BY_ORIGIN);
+	}
+
+	public static final void sortByType(Planes planes) {
+		Collections.sort(planes.plane, BY_MODEL);
+	}
+}

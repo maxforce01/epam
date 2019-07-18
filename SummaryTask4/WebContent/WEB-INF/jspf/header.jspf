@@ -1,0 +1,58 @@
+
+<%@ page import="ua.nure.gunko.rent.db.entity.Role"%>
+<%@ page import="ua.nure.gunko.rent.web.Path"%>
+<%@ include file="/WEB-INF/jspf/directive/page.jspf"%>
+<%@ include file="/WEB-INF/jspf/directive/taglib.jspf"%>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-info">
+	<h4>
+		<fmt:message key="header_jspf.anchor.Rental" />
+	</h4>
+	<c:if test="${not empty user}">
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarText" aria-controls="navbarText"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarText">
+			<ul class="navbar-nav mr-auto">
+				<c:choose>
+					<c:when test="${userRole.name == 'admin' }">
+						<a href="controller?command=CarListAdmin" class="nav-link"> <fmt:message
+								key="header_jspf.admin" />
+						</a>
+						<a href="controller?command=UserList" class="nav-link"> <fmt:message
+								key="header_jspf.admin.userList" />
+						</a>
+					</c:when>
+					<c:when test="${userRole.name == 'client' }">
+						<a href="controller?command=CarList" class="nav-link"> <fmt:message
+								key="header_jspf.client" />
+						</a>
+					</c:when>
+					<c:when test="${userRole.name == 'manager' }">
+						<a class="nav-link" href="controller?command=UncheckedOrders"> <fmt:message
+								key="header_jspf.manager.unchecked" />
+						</a>
+						<a class="nav-link" href="controller?command=AcceptedOrders"> <fmt:message
+								key="header_jspf.manager.accepted" />
+						</a>
+						<a class="nav-link" href="controller?command=DeniedOrders"> <fmt:message
+								key="header_jspf.manager.denied" />
+						</a>
+						<a class="nav-link" href="controller?command=ReturnedOrders"> <fmt:message
+								key="header_jspf.manager.returned" />
+						</a>
+					</c:when>
+				</c:choose>
+				<li><a href="controller" class="nav-link"> <fmt:message
+							key="header_jspf.anchor.Account" />
+				</a></li>
+			</ul>
+			<span class="navbar-text"> <a href="controller?command=logout">
+					<fmt:message key="header_jspf.anchor.logout" />
+			</a>
+			</span>
+		</div>
+	</c:if>
+</nav>

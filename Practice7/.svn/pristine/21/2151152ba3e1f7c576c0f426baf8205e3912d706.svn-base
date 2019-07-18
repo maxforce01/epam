@@ -1,0 +1,172 @@
+package ua.nure.gunko.practice7.controllers;
+
+import ua.nure.gunko.practice7.entity.Base;
+import ua.nure.gunko.practice7.entity.Plane;
+import ua.nure.gunko.practice7.entity.Plane.Parameters;
+import ua.nure.gunko.practice7.entity.Planes;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+public class ParsDOM {
+
+	private Planes planes;
+
+	public Planes getPlanes() {
+		return planes;
+	}
+
+	public void create() throws ParserConfigurationException, SAXException, IOException {
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+		Document document = builder.parse("input.xml");
+
+		Element root = document.getDocumentElement();
+		planes = new Planes();
+
+		NodeList list = root.getElementsByTagName("Plane");
+		for (int i = 0; i < list.getLength(); i++) {
+			Plane plane = getPlane(list.item(i));
+			planes.getPlane().add(plane);
+		}
+	}
+
+	private Plane getPlane(Node item) {
+		Plane plane = new Plane();
+		Element qPlane = (Element) item;
+		plane.setModel(qPlane.getElementsByTagName("Model").item(0).getTextContent());
+		plane.setOrigin(qPlane.getElementsByTagName("Origin").item(0).getTextContent());
+		plane.setPrice(Integer.parseInt(qPlane.getElementsByTagName("Price").item(0).getTextContent()));
+		plane.setParameters(getParams(qPlane));
+		plane.setChars(getChars(qPlane));
+		return plane;
+	}
+
+	private Base getChars(Element qPlane) {
+		int ammo = 0;
+		Base chars = new Base();
+		Element el = (Element) qPlane;
+		chars.setType(el.getElementsByTagName("Type").item(0).getTextContent());
+		chars.setRadar(Boolean.parseBoolean(el.getElementsByTagName("radar").item(0).getTextContent()));
+		chars.setCount(Integer.parseInt(el.getElementsByTagName("count").item(0).getTextContent()));
+		if (el.getElementsByTagName("rockets").item(0) != null) {
+			ammo = Integer.parseInt(el.getElementsByTagName("rockets").item(0).getTextContent());
+		}
+		chars.setRockets(ammo);
+		return chars;
+	}
+
+	private Parameters getParams(Element qPlane) {
+		Plane.Parameters params = new Parameters();
+		Element qParams = (Element) qPlane;
+		params.setLong(Integer.parseInt(qParams.getElementsByTagName("long").item(0).getTextContent()));
+		params.setWidth(Integer.parseInt(qParams.getElementsByTagName("width").item(0).getTextContent()));
+		params.setHeight(Integer.parseInt(qParams.getElementsByTagName("height").item(0).getTextContent()));
+		return params;
+	}
+
+	public static Document getDocument(Planes planes) throws ParserConfigurationException {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = dbf.newDocumentBuilder();
+		Document document = builder.newDocument();
+		Element root = document.createElement("Planes");
+		/*
+		 * root.setAttribute("xmlns:tns", "http://nure.ua/gunko/practice7");
+		 * root.setAttribute("xsi:schemaLocation",
+		 * "http://nure.ua/gunko/practice7 input.xsd");
+		 */
+		root.setAttributeNS("http://www.w3.org/2000/xmlns/","xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+		document.appendChild(root);
+		
+		for(Plane plane:planes.getPlane()) {
+			Element qPlane = document.createElement("Plane");
+			root.appendChild(qPlane);
+			
+			Element qModel = document.createElement("Model");
+			qModel.setTextContent(plane.getModel());
+			qPlane.appendChild(qModel);
+			
+			Element qOrigin = document.createElement("Origin");
+			qOrigin.setTextContent(plane.getOrigin());
+			qPlane.appendChild(qOrigin);
+			
+			Element qChars = document.createElement("Chars");
+			if(plane.getChars().getType().equals("разведчик")) {
+				qChars.setAttribute("xsi:type", "Char2");
+				Element qType = document.createElement("Type");
+				qType.setTextContent(plane.getChars().getType());
+				qChars.appendChild(qType);
+				Element qCount = document.createElement("count");
+				qCount.setTextContent(String.valueOf(plane.getChars().getCount()));
+				qChars.appendChild(qCount);
+				Element qRadar = document.createElement("radar");
+				qRadar.setTextContent(String.valueOf(plane.getChars().isRadar()));
+				qChars.appendChild(qRadar);
+			}else {
+				qChars.setAttribute("xsi:type", "Char1");
+				Element qType = document.createElement("Type");
+				qType.setTextContent(plane.getChars().getType());
+				qChars.appendChild(qType);
+				Element qCount = document.createElement("count");
+				qCount.setTextContent(String.valueOf(plane.getChars().getCount()));
+				qChars.appendChild(qCount);
+				Element qAmmo = document.createElement("rockets");
+				qAmmo.setTextContent(String.valueOf(plane.getChars().getRockets()));
+				qChars.appendChild(qAmmo);
+				Element qRadar = document.createElement("radar");
+				qRadar.setTextContent(String.valueOf(plane.getChars().isRadar()));
+				qChars.appendChild(qRadar);
+			}
+			qPlane.appendChild(qChars);
+			Element qParams = document.createElement("Parameters");
+			qPlane.appendChild(qParams);
+			Element qLong = document.createElement("long");
+			Element qWidth = document.createElement("width");
+			Element qHeight = document.createElement("height");
+			qLong.setTextContent(String.valueOf(plane.getParameters().getLong()));
+			qWidth.setTextContent(String.valueOf(plane.getParameters().getWidth()));
+			qHeight.setTextContent(String.valueOf(plane.getParameters().getHeight()));
+			qParams.appendChild(qLong);
+			qParams.appendChild(qWidth);
+			qParams.appendChild(qHeight);
+			Element qPrice = document.createElement("Price");
+			qPrice.setTextContent(String.valueOf(plane.getPrice()));
+			qPlane.appendChild(qPrice);
+		}
+		
+		return document;
+	}
+	public static void saveToXML(Planes plane, String xmlFileName)
+			throws ParserConfigurationException, TransformerException {		
+		// Test -> DOM -> XML
+		saveToXML(getDocument(plane), xmlFileName);		
+	}
+	public static void saveToXML(Document document, String xmlFileName) 
+			throws TransformerException {
+		
+		StreamResult result = new StreamResult(new File(xmlFileName));
+		
+		// set up transformation
+		TransformerFactory tf = TransformerFactory.newInstance();
+		javax.xml.transform.Transformer t = tf.newTransformer();
+		t.setOutputProperty(OutputKeys.INDENT, "yes");			
+		
+		// run transformation
+		t.transform(new DOMSource(document), result);
+	}
+}

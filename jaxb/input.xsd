@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://nure.ua/gunko/practice7"
+	xmlns:tns="http://nure.ua/gunko/practice7">
+
+	<element name="Planes">
+		<complexType>
+			<sequence>
+				<element name="Plane" type="tns:plane" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<complexType name="plane">
+		<sequence>
+			<element name="Model" type="string" />
+			<element name="Origin" type="string" />
+			<element name="Chars" type="tns:Base" />
+			<element name="Parameters">
+				<complexType>
+					<sequence>
+						<element name="long" type="int" />
+						<element name="width" type="int" />
+						<element name="height" type="int" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="Price" type="decimal">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="Base" abstract="false">
+		<sequence>
+
+		</sequence>
+	</complexType>
+
+	<complexType name="Char1">
+		<complexContent>
+			<extension base="tns:Base">
+				<sequence>
+					<element name="Type">
+						<simpleType>
+							<restriction base="string">
+								<enumeration value="самолет поддержки" />
+								<enumeration value="сопровождения" />
+								<enumeration value="истребитель" />
+								<enumeration value="перехватчик" />
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="count">
+						<simpleType>
+							<restriction base="int">
+								<enumeration value="2" />
+								<enumeration value="1" />
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="complect" type="boolean" />
+					<element name="rockets" type="int" minOccurs="1"
+						maxOccurs="10" />
+					<element name="radar" type="boolean" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+
+	<complexType name="Char2">
+		<complexContent>
+			<extension base="tns:Base">
+				<sequence>
+					<element name="Type">
+						<simpleType>
+							<restriction base="string">
+								<enumeration value="разведчик" />
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="count">
+						<simpleType>
+							<restriction base="int">
+								<enumeration value="2" />
+								<enumeration value="1" />
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="complect" type="boolean" fixed="false" />
+					<element name="rockets" type="int" minOccurs="0"
+						maxOccurs="0" />
+					<element name="radar" type="boolean" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+</schema>
