@@ -1,9 +1,7 @@
 package ua.nure.gunko.rent.web.command.client;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,7 +12,6 @@ import ua.nure.gunko.rent.db.entity.Car;
 import ua.nure.gunko.rent.db.entity.CarClass;
 import ua.nure.gunko.rent.db.entity.Role;
 import ua.nure.gunko.rent.db.entity.User;
-import ua.nure.gunko.rent.web.ActionType;
 import ua.nure.gunko.rent.web.Path;
 import ua.nure.gunko.rent.web.command.Command;
 
@@ -26,19 +23,7 @@ public class CarListCommand  extends Command{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType type)
-			throws IOException, ServletException {
-		String forward = null;
-		if (type == ActionType.GET) {
-			forward = doGet(request, response);
-		} else {
-			String error = "error.invalid.request";
-			request.setAttribute("errorMessage", error);
-			forward = Path.PAGE__ERROR_PAGE;
-		}
-		return forward;
-	}
+
 
 	@Override
 	protected String doPost(HttpServletRequest request, HttpServletResponse response) {

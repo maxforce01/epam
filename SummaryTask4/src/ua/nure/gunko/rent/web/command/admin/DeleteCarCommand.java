@@ -57,7 +57,8 @@ public class DeleteCarCommand extends Command {
 
 	@Override
 	protected String doGet(HttpServletRequest request, HttpServletResponse response) {
-		return Path.COMMAND__ERROR_PAGE + "error.invalid.request";
+		request.setAttribute("errorMessage", "error.invalid.request");
+		return Path.PAGE__ERROR_PAGE;
 	}
 
 }

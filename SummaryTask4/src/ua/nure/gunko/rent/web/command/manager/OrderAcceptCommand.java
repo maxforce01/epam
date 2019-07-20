@@ -40,11 +40,6 @@ public class OrderAcceptCommand extends Command {
 			String errorMessage = "error.invalid.permission";
 			return Path.COMMAND__ERROR_PAGE + errorMessage;
 		}
-		String flag = (String) session.getAttribute("flag");
-		if (flag != null) {
-			String errorMessage = "error.redirect";
-			return Path.COMMAND__ERROR_PAGE + errorMessage;
-		}
 		String status = (String) request.getParameter("status");
 		String order_id = (String) request.getParameter("order_id");
 		String cause = (String) request.getParameter("cause");

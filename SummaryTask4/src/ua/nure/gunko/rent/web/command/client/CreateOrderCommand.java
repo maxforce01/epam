@@ -38,10 +38,6 @@ public class CreateOrderCommand extends Command {
 			String errorMessage = "error.invalid.permission";
 			return Path.COMMAND__ERROR_PAGE+errorMessage;
 		}
-		String flag = (String) session.getAttribute("flag");
-		if(flag != null) {
-			String errorMessage = "error.redirect";
-			return Path.COMMAND__ERROR_PAGE+errorMessage;		}
 		Order order = (Order) session.getAttribute("order");
 		session.removeAttribute("order");
 		String pay = (String) request.getParameter("payment");

@@ -20,7 +20,7 @@ public class ErrorCommandTest  extends Mockito{
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 		HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
 		when(request.getParameter("message")).thenReturn("message");
-		new ErrorCommand().execute(request, response, ActionType.POST);
+		assertEquals(new ErrorCommand().execute(request, response, ActionType.POST), Path.COMMAND__ERROR_PAGE+"message");
 	}
 
 	@Test

@@ -1,6 +1,8 @@
 package test.ua.nure.gunko.rent.web.command.common;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -11,6 +13,7 @@ import org.mockito.Mockito;
 import ua.nure.gunko.rent.db.UserDao;
 import ua.nure.gunko.rent.db.entity.Role;
 import ua.nure.gunko.rent.web.ActionType;
+import ua.nure.gunko.rent.web.Path;
 import ua.nure.gunko.rent.web.command.common.NoCommand;
 
 public class NoCommandTest extends Mockito {
@@ -23,7 +26,7 @@ public class NoCommandTest extends Mockito {
 		when(request.getSession()).thenReturn(session);
 		when(session.getAttribute("user")).thenReturn(new UserDao().findUser((long) 2));
 		when(session.getAttribute("userRole")).thenReturn(Role.ADMIN);
-		new NoCommand().execute(request, response, ActionType.POST);
+		assertEquals(Path.ACCOUNT_URL, new NoCommand().execute(request, response, ActionType.POST));
 	}
 
 	@Test
@@ -34,7 +37,7 @@ public class NoCommandTest extends Mockito {
 		when(request.getSession()).thenReturn(session);
 		when(session.getAttribute("user")).thenReturn(new UserDao().findUser((long) 2));
 		when(session.getAttribute("userRole")).thenReturn(Role.ADMIN);
-		new NoCommand().execute(request, response, ActionType.GET);
+		assertEquals(Path.ACCOUNT_PAGE, new NoCommand().execute(request, response, ActionType.GET));
 	}
 
 }

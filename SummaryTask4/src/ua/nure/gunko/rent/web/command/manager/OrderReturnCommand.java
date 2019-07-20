@@ -96,7 +96,6 @@ public class OrderReturnCommand extends Command {
 			String errorMessage = "error.somthing.was.wrong";
 			return Path.COMMAND__ERROR_PAGE+errorMessage;
 		}
-		session.setAttribute("flag", "flag");
 		return Path.COMMAND__ACCEPTED_PAGE_URL+"success.return.order";
 	}
 

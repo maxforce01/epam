@@ -37,10 +37,6 @@ public class CallFinesCommand extends Command {
 			String errorMessage = "error.invalid.permission";
 			return Path.COMMAND__ERROR_PAGE+errorMessage;
 		}
-		String flag = (String) session.getAttribute("flag");
-		if (flag != null) {
-			String errorMessage = "error.redirect";
-			return Path.COMMAND__ERROR_PAGE+errorMessage;}
 		List<Fine> list = new FineDao().allFines();
 		UserDao dao = new UserDao();
 		for (Fine f : list) {

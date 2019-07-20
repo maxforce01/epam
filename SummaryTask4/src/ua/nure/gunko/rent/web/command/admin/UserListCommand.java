@@ -22,7 +22,7 @@ public class UserListCommand extends Command{
 
 	@Override
 	protected String doPost(HttpServletRequest request, HttpServletResponse response) {
-		String errorMessage = "error.invalid.permission";
+		String errorMessage = "error.invalid.request";
 		return Path.COMMAND__ERROR_PAGE+errorMessage;
 	}
 

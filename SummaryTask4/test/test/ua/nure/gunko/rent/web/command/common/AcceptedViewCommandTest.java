@@ -20,7 +20,7 @@ public class AcceptedViewCommandTest extends Mockito {
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 		HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
 		when(request.getParameter("success")).thenReturn("success");
-		new AcceptedViewCommand().execute(request, response, ActionType.POST);
+		assertEquals(new AcceptedViewCommand().execute(request, response, ActionType.POST), Path.COMMAND__ACCEPTED_PAGE_URL+"success");
 	}
 
 	@Test
